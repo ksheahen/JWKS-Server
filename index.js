@@ -1,3 +1,11 @@
+// CSCE 3550-001 JWKS Server Project
+// Author: Kathryn Sheahen
+
+// Project 1: All tests completed
+// Project 2: 60/65 tests completed - was not able to finish. 
+// Turned in a different version (based off JS skeleton provided by JH)
+// that was able to pass all tests (see github repo jwks-server-2)
+
 // Imports
 const express = require('express');
 const jwt = require('jsonwebtoken');
@@ -29,13 +37,16 @@ app.get('/.well-known/jwks.json', (req, res) => {
 });
 
 // Authentication endpoint to generate a JWT
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
   
   try {
     // Check if the request has an expired token
+
+    //I think this is where the error is
     const expired = req.query.expired === 'true';
     const kid = expired ? 'expired-key-id' : 'active-key-id'; // Use the expired key if requested
-    const privateKey = keyManager.getPrivateKey(kid);         // Get the private key
+    //const privateKey = keyManager.getPrivateKey(kid); // Get the private key
+    const privateKey = await keyManager.getPrivateKey(kid); // Get the private key
 
     // Check if the private key exists
     if (!privateKey) {
